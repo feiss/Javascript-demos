@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+	<head>
+		<title>JS1k, 1k demo submission [id]</title>
+		<meta charset="utf-8" />
+	</head>
+	<body bgcolor="white">
+		<div id="d"></div>
+		<canvas id="c"></canvas>
+		<script>
+
+var d=document, C=d.getElementById('c'), K=[], M=Math, w=500, c= C.getContext('2d'), 
+t, V=0, a, H=w, O, P, A, B, J=['#8cf','#c8f','#aaa'], li, v=20, z=100,T=8, 
+G=v, E=0, r=120, n=50, R='random', F='globalAlpha',s=250,S; 
+C.width=C.height=750;
+
+//keyboard events go to the same handler
+d.onkeydown=d.onkeyup=Y;
+d.onmousemove=L;
+
+//center board
+c.translate(z,z);
+
+Z(0);
+
+window.setInterval(l,15);
+
+//new game function. Parameter is score to add
+function Z(q)
+{
+    E+=q; //add score
+    O=P=s; // center ball
+    a= M[R]()*6; //choose random ball angle
+    A=M.cos(a)*3;  //set ball x speed
+    B=M.sin(a)*3;  //set ball y speed
+    t=30 //countdown for game start
+}
+
+//loop function
+function l()
+{
+	//rotate board. Transformations are cumulative
+    c.translate(s,s);
+	c.rotate(1/w);
+	c.translate(-s,-s);
+	
+	//global alpha to 0.3
+	c[F]=.3; 
+	
+	// T is ball bounce flashing. If not, paint board gray bg
+	T>5&&f(v,v,w-40,w-40,J[2]);
+	//paint scoreboard	
+    f(s,v,E,w-40,J[E>0?1:0]),
+	//paint white (motion blur effect)	
+	f(-n,-n,w+z,w+z,'#fff'); 
+    
+	//global alpha back to 1
+	c[F]=1;
+	//set blue player velocity, depending on keys
+	V+=K[90]?2:K[65]?-2:0;
+	//move blue player
+    G+=V;
+	//set blue player limits
+    G<v?(G=v,V=0):G>w-r?(G=w-r,V=0):0;
+	//decelerate blue player
+    V*=.8;
+	//paint blue player 
+    f(0,G,v,z,J[0]);
+    f(G,0,z,v,J[0]);
+    
+	//set purple player limits
+    H= H<v?v:H>w-r?w-r:H;
+	//paint purple player
+    f(w-v,H,v,z,J[1]);
+    f(H,w-v,z,v,J[1]);
+	//move ball
+	t<0?(O+=A,P+=B):t--;
+	//if ball reaches board boundaries, reinitiate game
+    O<v||P<v? Z(v):O>w-v||P>w-v?Z(-v):0;
+	
+	//random number to add to bounce
+	S=M[R]()*.2;
+	//ball-player colisions and bounce
+    O<30&&M.abs(P-(G+n))<n||O>w-30&&M.abs(P-(H+n))<n? (A*=-1-S,T=0): 
+	P<30&&M.abs(O-(G+n))<n||P>w-30&&M.abs(O-(H+n))<n? (B*=-1-S,T=0):T++;
+    //paint ball
+	f(O-10,P-10,v,v,J[2])
+}
+//square painting function
+function f(y,u,i,o,x){c.fillStyle=x;c.fillRect(y,u,i,o)}
+//keyboard handling
+function Y(e){K[e.keyCode]= e.type!='keyup'}
+//mouse handling
+function L(e){H=e.pageY-n}
+
+//packed with http://dean.edwards.name/packer/
+//var d=document,C=d.getElementById('c'),K=[],M=Math,w=500,c=C.getContext('2d'),t,V=0,a,H=w,O,P,A,B,J=['#8cf','#c8f','#aaa'],li,v=20,z=100,T=8,G=v,E=0,r=120,n=50,R='random',F='globalAlpha',s=250,S;C.width=C.height=750;d.onkeydown=d.onkeyup=Y;d.onmousemove=L;c.translate(z,z);Z(0);window.setInterval(l,15);function Z(q){E+=q;O=P=s;a=M[R]()*6;A=M.cos(a)*3;B=M.sin(a)*3;t=30}function l(){c.translate(s,s);c.rotate(1/w);c.translate(-s,-s);c[F]=.3;T>5&&f(v,v,w-40,w-40,J[2]);f(s,v,E,w-40,J[E>0?1:0]),f(-n,-n,w+z,w+z,'#fff');c[F]=1;V+=K[90]?2:K[65]?-2:0;G+=V;G<v?(G=v,V=0):G>w-r?(G=w-r,V=0):0;V*=.8;f(0,G,v,z,J[0]);f(G,0,z,v,J[0]);H=H<v?v:H>w-r?w-r:H;f(w-v,H,v,z,J[1]);f(H,w-v,z,v,J[1]);t<0?(O+=A,P+=B):t--;O<v||P<v?Z(v):O>w-v||P>w-v?Z(-v):0;S=M[R]()*.2;O<30&&M.abs(P-(G+n))<n||O>w-30&&M.abs(P-(H+n))<n?(A*=-1-S,T=0):P<30&&M.abs(O-(G+n))<n||P>w-30&&M.abs(O-(H+n))<n?(B*=-1-S,T=0):T++;f(O-10,P-10,v,v,J[2])}function f(y,u,i,o,x){c.fillStyle=x;c.fillRect(y,u,i,o)}function Y(e){K[e.keyCode]=e.type!='keyup'}function L(e){H=e.pageY-n}
+</script>
+</body>
+</html>
