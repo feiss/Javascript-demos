@@ -5,3 +5,6 @@ done in Javascript, canvas, in 1023 Bytes
 player 1: keys A,Z
 player 2: mouse
 
+My intention is to add features and add multiplayer support via node.js
+
+Flattr link: https://flattr.com/thing/47898/Javascript-Multiuser-Multipaddle-PONG
