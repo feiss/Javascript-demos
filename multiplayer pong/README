@@ -1,0 +1,21 @@
+*Crazy multiplayer pong*
+
+done in Javascript, canvas, supporting network multiplayer 
+
+Move paddle using keys A,Z or Mouse (up and down)
+
+- pong.js is the node.js server (you must have ws/ dir in the same dir as this file)[2]
+- pong.html is the client.
+
+
+Using:
+[1] node.js (http://nodejs.org)
+[2] node-websocket-server (http://github.org/miksago/node-websocket-server)
+
+
+- Version History -----
+
+14 aug 2010  version v0.001. This is a very very rough version of what it has to be. But it works (kinda)
+
+
+
