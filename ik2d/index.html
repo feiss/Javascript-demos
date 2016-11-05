@@ -2,24 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <title>Simple &amp; fake 2d IK arm</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
 <style>
 	body{
 		background: #333;
+		font: 12px arial, sans-serif;
+		line-height: 20px;
+	}
+	div{
+		width: 600px;
+		height: 600px;
+		margin: 0 auto;
+	}
+	a{
+		color: #666;
+		text-decoration: none;
+		display: block;
+	}
+	a:hover{
+		color: #aaa;
 	}
 	canvas{
-		background: #444;
-		width: 600px;
-		height: 500px;
-		margin: 0 auto;
-		display: block;
+		margin: 10px 0;
 		cursor: pointer;
 	}
 </style>
 </head>
 <body onload="init()">
-
-<canvas id="b"></canvas>
+<div>
+	<canvas id="b"></canvas>
+	<a href="https://github.com/feiss/Javascript-demos/tree/gh-pages/ik2d">GitHub</a>
+	<a href="http://twitter.com/feiss">@feiss</a>
+	<a href="http://feiss.be">feiss.be</a>
+</div>
 <script>
 	
 var b = document.getElementById('b');
@@ -117,6 +133,16 @@ function solve(){
 }
 
 </script>
-
+<!-- google analytics -->
+<script>
+  var _gaq = [['_setAccount', 'UA-5753152-1'], ['_trackPageview']];
+  (function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+  }(document, 'script'));
+</script>
+<!-- google analytics -->
 </body>
 </html>
