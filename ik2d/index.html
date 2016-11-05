@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+<style>
+	body{
+		background: #333;
+	}
+	canvas{
+		background: #444;
+		width: 600px;
+		height: 500px;
+		margin: 0 auto;
+		display: block;
+		cursor: pointer;
+	}
+</style>
+</head>
+<body onload="init()">
+
+<canvas id="b"></canvas>
+<script>
+	
+var b = document.getElementById('b');
+c = b.getContext('2d')
+b.width = 600;
+b.height = 500;
+c.lineCap = "round";
+
+var body = new THREE.Vector2(120, 200);
+var target = new THREE.Vector2(100, 100);
+var elbow = new THREE.Vector2(100, 100);
+var hand = new THREE.Vector2(100, 100);
+var armLength = 100;
+var armWidth = 20;
+var flexed = false;
+
+c.lineWidth = armWidth;
+c.lineJoin = "round";
+
+function init(ev){
+	b.addEventListener('mousemove', mousemove)
+}
+
+function mousemove(ev){
+	target.x = ev.clientX - ev.target.offsetLeft;
+	target.y = ev.clientY - ev.target.offsetTop;
+	solve();
+	draw();
+}
+
+draw();
+function draw(){
+	c.fillStyle = "#444";
+	c.fillRect(0, 0, b.width, b.height);
+/*
+	c.strokeStyle = '#383838';
+	c.lineWidth = 1;
+	c.beginPath();
+	c.arc(body.x, body.y, armLength, 0, 2 * Math.PI, false);
+	c.moveTo(target.x, target.y)
+	c.arc(target.x, target.y, armLength, 0, 2 * Math.PI, false);
+	c.stroke();
+*/
+	c.strokeStyle = '#850';
+	c.beginPath();
+	c.moveTo(body.x, body.y);
+	c.lineTo(elbow.x, elbow.y);
+	c.lineTo(hand.x, hand.y);
+	c.stroke();
+
+	circle(body.x, body.y, armWidth * 0.3, '#444');
+	circle(target.x, target.y, 3, '#888');
+	circle(hand.x, hand.y, armWidth * 0.3, '#F90');
+	circle(elbow.x, elbow.y, armWidth * 0.3, !flexed ? "#d70" : '#fff');
+}
+
+function circle(x, y, r, col){
+	c.fillStyle = col;
+	c.beginPath();
+	c.arc(x, y, r, 0, 2 * Math.PI, false);
+	c.fill();
+}
+
+
+function solve(){
+	var midpoint = new THREE.Vector2(target.x, target.y).sub(body).multiplyScalar(0.5);
+
+	// extended arm
+	if (midpoint.length() > armLength){
+		var bodytarget = new THREE.Vector2(midpoint.x, midpoint.y);
+		bodytarget.normalize().multiplyScalar(armLength);
+		elbow.x = body.x + bodytarget.x;
+		elbow.y = body.y + bodytarget.y;
+		flexed = false;
+	}
+	else{
+		var b2 = Math.sqrt(armLength * armLength - midpoint.length() * midpoint.length());
+		var bv = new THREE.Vector3(midpoint.x, midpoint.y, 0);
+		bv.applyAxisAngle(new THREE.Vector3(0,0,1), Math.PI / 2);
+		bv.normalize();
+		bv.multiplyScalar(b2);
+		elbow.x = midpoint.x + bv.x;
+		elbow.y = midpoint.y + bv.y;
+		elbow.normalize();
+		elbow.multiplyScalar(armLength);
+		elbow.add(body);
+		flexed = true;
+	}
+
+	var elbowtarget = new THREE.Vector2(target.x, target.y).sub(elbow).normalize();
+	elbowtarget.multiplyScalar(armLength);
+	hand.x = elbow.x + elbowtarget.x;
+	hand.y = elbow.y + elbowtarget.y;
+
+}
+
+</script>
+
+</body>
+</html>
